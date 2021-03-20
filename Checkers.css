@@ -1,0 +1,121 @@
+html {
+	background-color: rgb(0,0,0,0.8);
+	font-family: Verdana;
+}
+
+body {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 100vh;
+}
+
+.whole_page {
+	display: flex;
+	position: absolute;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgb(0,0,0,0.5);
+	color: white;
+}
+
+.grid_container {
+	align-items: center;
+	width: 50%;
+	margin: 0 10%;
+}
+
+.grid {
+	width: 100%;
+}
+
+.timer {
+	text-align: center;
+	padding: 10px 0px;
+	background-color: rgb(0,0,0,0.8);
+}
+
+td {
+    height: 80px;
+}
+
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  }
+
+.box {
+	border: 1px white solid;
+	text-align: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	font-size: 25px;
+}
+
+.even {
+	background-color: black;
+}
+
+.option_available {
+	background-color: #f0f;
+	opacity: 0.5;
+}
+
+.box_selected {
+	background-color: transparent;
+	border-radius: 100%;
+	box-shadow: 0 0 20px 10px #f0f;
+}
+
+.miscellany {
+	background-color: rgb(0,0,0,0.7);
+	width: 48%;
+	padding: 1%;
+	margin-top: 1%;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 50px; /* for the credits to avoid overflow */
+}
+
+.settings {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.howtoplay {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+button {
+	height: 50px;
+	width: 100px;
+}
+
+.credits {
+  position: absolute;
+  bottom: 0%;
+  right: 1%;
+  font-size: 15px;
+}
+.yellow,.yellow:visited {
+  color: yellow;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 500px) {
+  .grid_container {
+    width: 95%;
+	margin: 0 2.5%;
+  }
+}
