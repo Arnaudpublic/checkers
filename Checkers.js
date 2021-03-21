@@ -154,7 +154,7 @@ function play(e) {
 			}
 			can_kill = kill_check()
 			if (can_kill) { // play again for double kill
-				setTimeout(play, 2000, e)
+				setTimeout(play, 500, e) // timeout necessary to avoid bugs
 			} else {	
 				if (whose_turn=="black") {
 					whose_turn = "white"
@@ -193,7 +193,17 @@ function play(e) {
 		if ((box_selected.classList.contains("occupied"))&&(grid_hidden[row_number][box_number].includes(whose_turn))) {
 			// Then, we check if we can catch a pawn from the opposing team
 			if (can_kill) { 
-				// Keep this empty?
+				if (can_kill_from(row_number,box_number)) {
+					for (var i = grid_html.getElementsByClassName("box_selected").length - 1; i >= 0; i--) {
+						grid_html.getElementsByClassName("box_selected")[i].classList.remove("box_selected")
+					}
+					document.getElementsByClassName("rows")[row_number].getElementsByClassName("box")[box_number].classList.add("box_selected")
+					for (var i = grid_html.getElementsByClassName("option_available").length - 1; i >= 0; i--) {
+						// Removing all possible move targets
+						grid_html.getElementsByClassName("option_available")[i].classList.remove("option_available","kill")
+					}
+					can_kill_from(row_number,box_number) // not optimised, but works.
+				}
 			} else { // If no kill available, then try to move around
 				if (grid_html.getElementsByClassName("box_selected")[0]!=undefined) {
 					grid_html.getElementsByClassName("box_selected")[0].classList.remove("box_selected")
@@ -264,8 +274,46 @@ function kill_check() { // Recursion, checks all available kills -> later // Tod
 				}
 			}
 			if (document.getElementsByClassName("kill")[0]!=undefined) {
+				document.getElementsByClassName("rows")[kill_row_start].getElementsByClassName("box")[kill_box_start].classList.add("box_selected")
 				return true
 			}
 		}
+	}
+}
+
+function can_kill_from(kill_row_start,kill_box_start) {
+	if (grid_hidden[kill_row_start][kill_box_start].includes(whose_turn)) {
+		if (grid_hidden[kill_row_start+2]!=undefined) { // Todo: Add an override for backkills
+			if ((grid_hidden[kill_row_start+2][kill_box_start+2]=="empty")&&(enemy[grid_hidden[kill_row_start+1][kill_box_start+1]]==whose_turn)) { // Bottom right, checks if box taken by an enemy and if it can catch it
+				kill_row_end = kill_row_start+2
+				kill_box_end = kill_box_start+2
+				document.getElementsByClassName("rows")[kill_row_end].getElementsByClassName("box")[kill_box_end].classList.add("option_available","kill")
+				//kill_check(kill_row_start+2,kill_box_start+2)
+			}
+			if ((grid_hidden[kill_row_start+2][kill_box_start-2]=="empty")&&(enemy[grid_hidden[kill_row_start+1][kill_box_start-1]]==whose_turn)) { // Bottom left						kill_row_end = kill_row_start+2
+				kill_row_end = kill_row_start+2
+				kill_box_end = kill_box_start-2
+				document.getElementsByClassName("rows")[kill_row_end].getElementsByClassName("box")[kill_box_end].classList.add("option_available","kill")
+				//kill_check(kill_row_start+2,kill_box_start-2)
+			}
+		}
+		if (grid_hidden[kill_row_start-2]!=undefined) {
+			if ((grid_hidden[kill_row_start-2][kill_box_start+2]=="empty")&&(enemy[grid_hidden[kill_row_start-1][kill_box_start+1]]==whose_turn)) { // Top right
+				kill_row_end = kill_row_start-2
+				kill_box_end = kill_box_start+2
+				document.getElementsByClassName("rows")[kill_row_end].getElementsByClassName("box")[kill_box_end].classList.add("option_available","kill")
+				//kill_check(kill_row_start-2,kill_box_start+2)
+			}
+			if ((grid_hidden[kill_row_start-2][kill_box_start-2]=="empty")&&(enemy[grid_hidden[kill_row_start-1][kill_box_start-1]]==whose_turn)) { // Top left
+				kill_row_end = kill_row_start-2
+				kill_box_end = kill_box_start-2
+				document.getElementsByClassName("rows")[kill_row_end].getElementsByClassName("box")[kill_box_end].classList.add("option_available","kill")
+				//kill_check(kill_row_start-2,kill_box_start-2)
+			}
+		}
+	}
+	if (document.getElementsByClassName("kill")[0]!=undefined) {
+		document.getElementsByClassName("rows")[kill_row_start].getElementsByClassName("box")[kill_box_start].classList.add("box_selected")
+		return true
 	}
 }
